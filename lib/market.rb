@@ -34,4 +34,19 @@ class Market
     end
     stock
   end
+
+  def sell (item, amount)
+    vendors_with_item = vendors_that_sell(item)
+    total_stock = vendors_with_item.sum { |vendor| vendor.check_stock(item) }
+    if total_stock >= amount
+      remainder = amount
+      vendors_with_item.each do |vendor|
+        remainder = vendor.decrease_stock(item, remainder)
+      end
+      true
+    else
+      false
+    end
+  end
+    
 end
