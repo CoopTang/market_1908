@@ -42,4 +42,14 @@ class VendorTest < Minitest::Test
     @vendor.stock("Peaches", 25)
     assert_equal 55, @vendor.check_stock("Peaches")
   end
+
+  def test_can_decrease_stock
+    @vendor.stock("Peaches", 30)
+    assert_equal 0, @vendor.decrease_stock("Peaches", 5)
+    assert_equal 25, @vendor.check_stock("Peaches")
+
+    assert_equal 25, @vendor.decrease_stock("Peaches", 50)
+    assert_equal 0, @vendor.check_stock("Peaches")
+  end
+
 end
