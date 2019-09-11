@@ -53,4 +53,60 @@ class MarketTest < Minitest::Test
     assert_equal [@vendor_2], @market.vendors_that_sell("Banana Nice Cream")
   end
 
+  def test_can_list_all_items_sorted
+    @vendor_1.stock("Peaches", 35)    
+    @vendor_1.stock("Tomatoes", 7)    
+    @vendor_2.stock("Banana Nice Cream", 50)    
+    @vendor_2.stock("Peach-Raspberry Nice Cream", 25)    
+    @vendor_3.stock("Peaches", 65)
+    @market.add_vendor(@vendor_1)
+    @market.add_vendor(@vendor_2)
+    @market.add_vendor(@vendor_3)
+
+    expected_array = ["Banana Nice Cream", "Peach-Raspberry Nice Cream", "Peaches", "Tomatoes"].sort
+    assert_equal expected_array, @market.sorted_item_list
+  end 
+
+  def test_can_get_total_inventory
+    @vendor_1.stock("Peaches", 35)    
+    @vendor_1.stock("Tomatoes", 7)    
+    @vendor_2.stock("Banana Nice Cream", 50)    
+    @vendor_2.stock("Peach-Raspberry Nice Cream", 25)    
+    @vendor_3.stock("Peaches", 65)
+    @market.add_vendor(@vendor_1)
+    @market.add_vendor(@vendor_2)
+    @market.add_vendor(@vendor_3)
+
+    expected_hash = {
+      "Peaches" => 100, 
+      "Tomatoes" => 7, 
+      "Banana Nice Cream" => 50, 
+      "Peach-Raspberry Nice Cream" => 25
+    }
+
+    assert_equal expected_hash, @market.total_inventory
+  end
+
+  def test_can_sell_items_when_stocked
+    @vendor_1.stock("Peaches", 35)    
+    @vendor_1.stock("Tomatoes", 7)    
+    @vendor_2.stock("Banana Nice Cream", 50)    
+    @vendor_2.stock("Peach-Raspberry Nice Cream", 25)    
+    @vendor_3.stock("Peaches", 65)
+    @market.add_vendor(@vendor_1)
+    @market.add_vendor(@vendor_2)
+    @market.add_vendor(@vendor_3)
+  end
+
+  def test_cannot_sell_items_if_not_enough_stock
+    @vendor_1.stock("Peaches", 35)    
+    @vendor_1.stock("Tomatoes", 7)    
+    @vendor_2.stock("Banana Nice Cream", 50)    
+    @vendor_2.stock("Peach-Raspberry Nice Cream", 25)    
+    @vendor_3.stock("Peaches", 65)
+    @market.add_vendor(@vendor_1)
+    @market.add_vendor(@vendor_2)
+    @market.add_vendor(@vendor_3)
+  end
+
 end
